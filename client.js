@@ -4,12 +4,16 @@ var decoder = new StringDecoder.StringDecoder('utf8');
 var fs = require('fs')
 
 var listen_addr = '0.0.0.0'
-var local_port = 40000
+// var local_port = 40000
 
 var secret_string = process.argv[2] || 'bigfatsecret'
-var remote_server = process.argv[3] || '127.0.0.1'
 
+var remote_server = process.argv[3] || '127.0.0.1'
 var remote_port = process.argv[4] || 9300
+
+var local_port = parseInt(process.argv[5]) || 40000
+
+var local_server = false
 
 var servers = new Array()
 
@@ -32,6 +36,8 @@ function setupServer(port) {
 
 		var input = socket
 
+		console.log("connected!")
+
 		console.log(input.remoteAddress)
 		console.log(input.remotePort)
 
@@ -49,18 +55,28 @@ function setupServer(port) {
 
 		socket.on('data', function(d){
 
-			var data = decoder.write(d).replace(/\r?\n/g, "")
+			// var data = decoder.write(d).replace(/\r?\n/g, "")
 			console.log("data")
 
 		})
 	})
 
-	server.listen(port, listen_addr)
-
+	server.listen({
+		port: port,
+		host: listen_addr,
+		exclusive: false,
+		allowHalfOpen: true
+	})
+	return server
 
 	}
 
 function setupConnection(port, address) {
+
+	var address = address
+	var port = port
+
+	console.log(port + " " + address)
 
 	var client = new net.Socket();
 
@@ -73,37 +89,23 @@ function setupConnection(port, address) {
 
 	})
 
+	client.connect({
 
-	}
+		port: port,
+		host: address
+		// localPort: local_port
 
-
-
-
-var banker = net.createServer(function(socket) {
-
-	var input = socket
-	console.log(input.remoteAddress)
-	console.log(input.remotePort)
-
-
-	input.on('error', function(e){
-		console.log('banker connection abruptly ended.')
 	})
 
-	// socket.on('data', function(d){
-
-		// var data = decoder.write(d).replace(/\r?\n/g, "")
-		//
-		// console.log(d)
-		// console.log( data == secret )
-		// console.log(data)
-		// console.log(secret)
+	// console.log(client)
 
 
-	// })
-})
+}
 
-// banker.listen(local_port, listen_addr)
+
+// var server = setupServer(local_port)
+
+
 
 var client = new net.Socket();
 
@@ -119,9 +121,11 @@ client.on('connect', (s) => {
 
 client.on('close', (c) => {
 
-	console.log('closed.')
+		console.log('closed.')
+
 
 })
+
 
 client.on('ready', (c) => {
 
@@ -151,16 +155,21 @@ client.on('readable', (c) => {
 
 			if ( data.command == "server" ) {
 
-				console.log("setup server")
+				console.log("setup server.")
 
-				setupServer(client.localPort)
+				local_server = client.localPort
 
+				// client.destroy()
 
 			}
 
 			else if ( data.command == "connect" ) {
 
-				setupConnection(data.port, data.address)
+				console.log("setup connection.")
+
+				setTimeout( function() {
+					setupConnection( data.port, data.address )
+				}.bind(null, data.port, data.address), 200 )
 
 			}
 
@@ -180,7 +189,9 @@ client.on('readable', (c) => {
 client.connect({
 
 	port:remote_port,
-	host:remote_server
-	// localPort: local_port
+	host:remote_server,
+	localPort: local_port,
+	exclusive: false,
+	allowHalfOpen: true
 
 })
