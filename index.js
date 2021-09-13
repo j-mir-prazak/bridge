@@ -25,7 +25,7 @@ var banker = net.createServer(function(socket) {
 	var input = socket
 	var secret = ""
 
-	console.log(input.remotePort + " " input.remoteAddress)
+	console.log(input.remotePort + " " + input.remoteAddress)
 	// console.log(input.remoteAddress)
 
 	input.on( 'error', function(e) {
