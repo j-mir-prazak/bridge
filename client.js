@@ -58,8 +58,8 @@ function setupServer(port, address) {
 
 		socket.on('data', function(d){
 
-			// var data = decoder.write(d).replace(/\r?\n/g, "")
-			console.log("data")
+			var data = decoder.write(d).replace(/\r?\n/g, "")
+			console.log(data)
 
 		})
 	})
@@ -83,13 +83,14 @@ function setupServer(port, address) {
 	server.on('close', function(){
 
 		// setupConnection(port, address)
-		console.log("nada.")
+		// console.log("nada.")
 	})
 
 	return server
 	}
 
 var reconnector = null
+
 
 function setupConnection(port, address) {
 
