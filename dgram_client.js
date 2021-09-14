@@ -130,6 +130,7 @@ function setupPeer(port, address) {
 
   peer.bind(bind_port)
   peer.connect(port, address)
+  console.log(peer)
   // peer.connect(remote_port, remote_addr)
 
 

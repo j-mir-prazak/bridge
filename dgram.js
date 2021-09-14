@@ -6,6 +6,7 @@ var server = dgram.createSocket('udp4')
 
 var register = {}
 
+var bind_port = process.argv[2] || 40000
 
 server.on('error', (err) => {
   console.log(`server error:\n${err.stack}`);
@@ -113,5 +114,5 @@ server.on('listening', () => {
 
 });
 
-server.bind(41234);
+server.bind(bind_port);
 // Prints: server listening 0.0.0.0:41234
