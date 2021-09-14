@@ -15,6 +15,8 @@ server.on('error', (err) => {
 
 server.on('message', (msg, rinfo) => {
 
+	console.log(rinfo.address + " " + rinfo.port)
+
 	var data = decoder.write(msg)
 
 	if ( data.match(/secret\:.*\:secret/) ) {
