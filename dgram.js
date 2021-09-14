@@ -46,13 +46,15 @@ server.on('message', (msg, rinfo) => {
 
 			})
 
+			var date = date: Date.now() + 1000
 
 			server.send( JSON.stringify({
 
 				command: "connect",
 				address: rinfo.address,
 				port: rinfo.port,
-				order: "a"
+				order: a,
+				date: date
 
 			}), register[secret_string].port, register[secret_string].address )
 
@@ -64,7 +66,8 @@ server.on('message', (msg, rinfo) => {
 				command: "connect",
 				address: register[secret_string].address,
 				port: register[secret_string].port,
-				order: "b"
+				order: "b",
+				date: date
 
 			}), rinfo.port, rinfo.address )
 

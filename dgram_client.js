@@ -35,13 +35,14 @@ client.on('message', (msg, rinfo) => {
       //   var message = Buffer.from('Some bytes');
       //   client.send(message, json.port, json.address, function(){console.log("sent.")})
       // }.bind(null,json),20)
+      var date = Date.now()
       if ( json.order == "a" ) {
-        peer = setupPeer(json.port, json.address, 10)
+        peer = setupPeer(json.port, json.address, json.date - date)
 
       }
       else if ( json.order == "b" ) {
 
-        peer = setupPeer(json.port, json.address)
+        peer = setupPeer(json.port, json.address, json.date - date)
 
 
       }
@@ -102,149 +103,13 @@ function setupPeer(port, address, timeout) {
 
   peer.on('connect', () => {
 
-    var message = Buffer.from('peer message.')
+    connect = true
 
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
-    peer.send(message)
+    var message = Buffer.from('peer message.')
+    peer.send(message)
+
+
+
 
   	// console.log("connected as peer.")
     // // console.log(peer)
@@ -269,7 +134,7 @@ function setupPeer(port, address, timeout) {
   });
 
   peer.on('close', () => {
-    console.log(peer)
+    // console.log(peer)
     console.log('peer closed.')
 
   });
@@ -280,11 +145,54 @@ function setupPeer(port, address, timeout) {
 
 
   var timeout = timeout || 0
+  var connect = false
 
-  peer.bind(bind_port)
+  peer.bind(bind_port, '0.0.0.0')
+
   setTimeout(function() {
-    peer.connect(port, address)
+
+    setInterval(function() {
+
+      if ( ! connect ) {
+
+        connect = true
+        // console.log(peer)
+        peer = dgram.createSocket({type:'udp4',reuseAddr:true});
+        peer.bind(bind_port, '0.0.0.0')
+
+        peer.connect(port, address)
+
+        peer.on('connect', () => {
+
+          connect = true
+
+          var message = Buffer.from('peer message.')
+          peer.send(message)
+
+
+        })
+        peer.on('message', (msg, rinfo) => {
+
+          console.log(msg)
+
+        });
+
+
+        setTimeout(function(){
+
+          peer.close(function() {
+            // console.log("callback")
+            connect = false
+
+          })
+
+        }, 500)
+      }
+    }.bind(null,port,address),2)
+
   }.bind(null, port, address), timeout)
+
+
 
   // console.log(peer)
   // peer.connect(remote_port, remote_addr)
