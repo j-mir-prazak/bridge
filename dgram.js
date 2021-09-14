@@ -27,6 +27,23 @@ server.on('message', (msg, rinfo) => {
 
 			console.log(register[secret_string])
 
+			console.log({
+
+				command: "connect",
+				address: rinfo.remoteAddress,
+				port: rinfo.remotePort
+
+			})
+
+			console.log({
+
+				command: "connect",
+				address: register[secret_string].address,
+				port: register[secret_string].port
+
+			})
+
+
 			server.send( JSON.stringify({
 
 				command: "connect",
@@ -34,6 +51,9 @@ server.on('message', (msg, rinfo) => {
 				port: rinfo.remotePort
 
 			}), register[secret_string].port, register[secret_string].address )
+
+
+
 
 			server.send( JSON.stringify({
 
