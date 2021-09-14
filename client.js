@@ -26,15 +26,18 @@ for( var i = 8000; i < 9000; i++) {
 
 }
 
-function setupServer(port) {
+function setupServer(port, address) {
 
 	console.log("setup on port " + port)
 
 	var port = port || false
+	var address = address || false
 
 	var server = net.createServer(function(socket) {
 
 		var input = socket
+
+		// clearTimeout(reconnector)
 
 		console.log("connected!")
 
@@ -67,9 +70,26 @@ function setupServer(port) {
 		exclusive: false,
 		allowHalfOpen: true
 	})
-	return server
 
+	// reconnector = setTimeout(function(){
+	//
+	// 	console.log("trying connection")
+	//
+	// 	server.close()
+	//
+	//
+	// }.bind(null, port, address, server), 10)
+
+	server.on('close', function(){
+
+		// setupConnection(port, address)
+		console.log("nada.")
+	})
+
+	return server
 	}
+
+var reconnector = null
 
 function setupConnection(port, address) {
 
@@ -82,6 +102,8 @@ function setupConnection(port, address) {
 
 	client.on('connect', (s) => {
 
+		clearTimeout(reconnector)
+
 		console.log("connected.")
 
 		client.write("hi, server")
@@ -92,10 +114,22 @@ function setupConnection(port, address) {
 	client.connect({
 
 		port: port,
-		host: address
-		// localPort: local_port
+		host: address,
+		localPort: local_port
 
 	})
+
+	client.on('close', () => {
+
+		console.log("closed.")
+
+	})
+
+	reconnector = setTimeout(function(){
+		console.log("trying server")
+		client.destroy()
+		setupServer(port, address)
+	}.bind(null, port, address), 100)
 
 	// console.log(client)
 
@@ -103,7 +137,7 @@ function setupConnection(port, address) {
 }
 
 
-// var server = setupServer(local_port)
+var server = null
 
 
 
@@ -124,7 +158,7 @@ client.on('close', (c) => {
 
 		console.log('closed.')
 
-		// server = setupServer(local_port)
+		if (local_server) server = setupServer(local_port)
 
 
 })
@@ -164,7 +198,7 @@ client.on('readable', (c) => {
 
 				local_server = client.localPort
 
-				// client.destroy()
+				client.destroy()
 
 			}
 
@@ -172,9 +206,9 @@ client.on('readable', (c) => {
 
 				console.log("setup connection.")
 
-				setTimeout( function() {
-					setupConnection( data.port, data.address )
-				}.bind(null, data.port, data.address), 200 )
+
+				setupConnection( data.port, data.address )
+
 
 			}
 
