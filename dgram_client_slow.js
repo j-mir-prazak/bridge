@@ -165,7 +165,7 @@ function setupPeer(port, address, timeout, local) {
           // console.log(peer)
           peer = dgram.createSocket({type:'udp4',reuseAddr:true});
           peer.bind(bind_port, '0.0.0.0')
-          peer.connect(port, address)
+          // peer.connect(port, address)
 
 
           peer.on('connect', () => {
