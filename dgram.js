@@ -89,7 +89,13 @@ server.on('message', (msg, rinfo) => {
 
 	}
 
-	else console.log(data)
+	else {
+
+		console.log(data)
+
+		server.send(Buff.from(data))
+
+		}
 
 });
 
