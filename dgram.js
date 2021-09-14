@@ -1,5 +1,5 @@
 var dgram = require('dgram');
-
+var decoder = new StringDecoder.StringDecoder('utf8');
 var server = dgram.createSocket('udp4');
 
 var register = {}
@@ -12,7 +12,9 @@ server.on('error', (err) => {
 
 server.on('message', (msg, rinfo) => {
 
-	if ( msg.match(/secret\:.*\:secret/) ) {
+	var data = decoder.write(msg)
+
+	if ( data.match(/secret\:.*\:secret/) ) {
 
 		var secret_string = data.replace(/secret\:(.*)\:secret/,"$1")
 
