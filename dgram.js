@@ -41,6 +41,8 @@ server.on('message', (msg, rinfo) => {
 
 			}), rinfo.port, rinfo.address )
 
+			delete register[secret_string]
+
 			// register[secret_string].socket.end()
 
 

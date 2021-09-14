@@ -17,7 +17,6 @@ client.on('error', (err) => {
 client.on('message', (msg, rinfo) => {
 
   console.log(`client got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-	client.send("got u!", rinfo.port, rinfo.address)
 
 });
 
