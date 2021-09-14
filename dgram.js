@@ -47,8 +47,8 @@ server.on('message', (msg, rinfo) => {
 			server.send( JSON.stringify({
 
 				command: "connect",
-				address: rinfo.remoteAddress,
-				port: rinfo.remotePort
+				address: rinfo.address,
+				port: rinfo.port
 
 			}), register[secret_string].port, register[secret_string].address )
 
