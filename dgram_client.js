@@ -127,8 +127,8 @@ function setupPeer(port, address) {
 
 
   peer.bind(bind_port)
-  peer.connect(port, address)
-  // peer.connect(remote_port, remote_addr)
+  // peer.connect(port, address)
+  peer.connect(remote_port, remote_addr)
 
 
 }
