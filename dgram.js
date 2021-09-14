@@ -1,8 +1,8 @@
 var dgram = require('dgram');
-var StringDecoder = require('StringDecoder')
+var StringDecoder = require('string_decoder')
 
-var decoder = new StringDecoder.StringDecoder('utf8');
-var server = dgram.createSocket('udp4');
+var decoder = new StringDecoder.StringDecoder('utf8')
+var server = dgram.createSocket('udp4')
 
 var register = {}
 
