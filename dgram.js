@@ -46,7 +46,7 @@ server.on('message', (msg, rinfo) => {
 
 			})
 
-			var date = date: Date.now() + 1000
+			var date = Date.now() + 1000
 
 			server.send( JSON.stringify({
 
