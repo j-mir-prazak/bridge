@@ -30,8 +30,8 @@ server.on('message', (msg, rinfo) => {
 			console.log({
 
 				command: "connect",
-				address: rinfo.remoteAddress,
-				port: rinfo.remotePort
+				address: rinfo.address,
+				port: rinfo.port
 
 			})
 
