@@ -25,6 +25,8 @@ server.on('message', (msg, rinfo) => {
 
 			console.log("got match.")
 
+			console.log(register[secret_string])
+
 			server.send( JSON.stringify({
 
 				command: "connect",
