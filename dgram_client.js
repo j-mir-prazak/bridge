@@ -25,7 +25,7 @@ client.on('connect', () => {
 
 	console.log("something is connecting.")
 
-  const message = Buffer.from('Some bytes');
+  const message = Buffer.from('secret:abcedf:secret');
 
   client.send(message)
 

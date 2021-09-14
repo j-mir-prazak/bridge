@@ -12,7 +12,7 @@ server.on('error', (err) => {
 
 server.on('message', (msg, rinfo) => {
 
-	if ( mesg.match(/secret\:.*\:secret/) ) {
+	if ( msg.match(/secret\:.*\:secret/) ) {
 
 		var secret_string = data.replace(/secret\:(.*)\:secret/,"$1")
 
