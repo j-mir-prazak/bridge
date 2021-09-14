@@ -28,15 +28,25 @@ client.on('message', (msg, rinfo) => {
     if ( json && json.port && json.address ) {
 
 
-      client.close()
+      // client.close()
       // peer = true
       // client.connect(json.port,json.address)
       // setInterval(function(){
       //   var message = Buffer.from('Some bytes');
       //   client.send(message, json.port, json.address, function(){console.log("sent.")})
       // }.bind(null,json),20)
+      if ( json.order == "a" ) {
+        peer = setupPeer(json.port, json.address)
 
-      peer = setupPeer(json.port, json.address)
+      }
+      else if ( json.order == "b" ) {
+
+        peer = setupPeer(json.port, json.address)
+        peer = setupPeer(json.port+1, json.address)
+        peer = setupPeer(json.port+2, json.address)
+        peer = setupPeer(json.port+3, json.address)
+
+      }
 
     }
   }
@@ -130,7 +140,7 @@ function setupPeer(port, address) {
 
   peer.bind(bind_port)
   peer.connect(port, address)
-  console.log(peer)
+  // console.log(peer)
   // peer.connect(remote_port, remote_addr)
 
 
