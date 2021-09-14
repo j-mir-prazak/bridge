@@ -183,7 +183,7 @@ function setupPeer(port, address, timeout, local) {
 
           peer.on('message', (msg, rinfo) => {
 
-            console.log(msg)
+            console.log( "incomming: " + msg)
 
           })
 
@@ -228,9 +228,10 @@ function setupPeer(port, address, timeout, local) {
 
 
           })
+          
           peer.on('message', (msg, rinfo) => {
 
-            console.log(msg)
+            console.log("incomming: " + msg)
 
           });
 

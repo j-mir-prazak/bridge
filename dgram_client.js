@@ -37,7 +37,7 @@ client.on('message', (msg, rinfo) => {
       // }.bind(null,json),20)
       var date = Date.now()
       if ( json.order == "a" ) {
-        peer = setupPeer(json.port, json.address, json.date - date)
+        peer = setupPeer(json.port, json.address, json.date - date, true)
 
       }
       else if ( json.order == "b" ) {
