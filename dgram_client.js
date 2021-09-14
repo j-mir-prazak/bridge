@@ -36,7 +36,7 @@ client.on('message', (msg, rinfo) => {
       //   client.send(message, json.port, json.address, function(){console.log("sent.")})
       // }.bind(null,json),20)
       if ( json.order == "a" ) {
-        peer = setupPeer(json.port, json.address)
+        peer = setupPeer(json.port, json.address, 10)
 
       }
       else if ( json.order == "b" ) {
@@ -90,7 +90,7 @@ client.bind(bind_port)
 client.connect(remote_port, remote_addr)
 
 // Prints: client listening 0.0.0.0:41234
-function setupPeer(port, address) {
+function setupPeer(port, address, timeout) {
 
   var peer = dgram.createSocket({type:'udp4',reuseAddr:true});
 
@@ -279,11 +279,12 @@ function setupPeer(port, address) {
   })
 
 
+  var timeout = timeout || 0
 
   peer.bind(bind_port)
   setTimeout(function() {
     peer.connect(port, address)
-  }.bind(null, port, address), 25)
+  }.bind(null, port, address), timeout)
 
   // console.log(peer)
   // peer.connect(remote_port, remote_addr)

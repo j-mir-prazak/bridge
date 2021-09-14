@@ -62,7 +62,9 @@ function setupServer(port, address) {
 			console.log(data)
 
 			if (data == "hi, server") {
+
 				socket.write("hi, client")
+				
 			}
 
 		})
