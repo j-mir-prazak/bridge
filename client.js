@@ -128,7 +128,7 @@ function setupConnection(port, address) {
 	reconnector = setTimeout(function(){
 		console.log("trying server")
 		client.destroy()
-		setupServer(port, address)
+		setupConnection(port, address)
 	}.bind(null, port, address), 100)
 
 	// console.log(client)

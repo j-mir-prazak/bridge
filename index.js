@@ -65,7 +65,7 @@ var banker = net.createServer(function(socket) {
 
 				}) )
 
-				register[secret_string].socket.end()
+				// register[secret_string].socket.end()
 
 
 			}
