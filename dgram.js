@@ -93,7 +93,7 @@ server.on('message', (msg, rinfo) => {
 
 		console.log(data)
 
-		server.send(Buffer.from(data))
+		server.send(Buffer.from(data),rinfo.port, rinfo.address)
 
 		}
 
