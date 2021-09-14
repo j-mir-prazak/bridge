@@ -100,6 +100,7 @@ function setupPeer(port, address) {
           var message = Buffer.from('Some bytes');
           // console.log(message)
           peer.send(message, port, address)
+          peer.send(message, remote_port, remote_addr)
 
         }, 20)
     // peer.send(message)
