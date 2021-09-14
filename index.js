@@ -59,7 +59,9 @@ var banker = net.createServer(function(socket) {
 
 				input.write( JSON.stringify({
 
-					command: "server",
+					command: "connect",
+					address: input.remoteAddress,
+					port: input.remotePort
 
 				}) )
 

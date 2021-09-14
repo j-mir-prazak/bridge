@@ -117,11 +117,14 @@ client.on('connect', (s) => {
 
 	client.write("secret:"+secret_string+":secret")
 
+
 })
 
 client.on('close', (c) => {
 
 		console.log('closed.')
+
+		server = setupServer(local_port)
 
 
 })
@@ -130,6 +133,8 @@ client.on('close', (c) => {
 client.on('ready', (c) => {
 
 	console.log('ready.')
+
+	client.destroy()
 
 })
 
