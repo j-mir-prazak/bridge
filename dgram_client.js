@@ -26,6 +26,8 @@ client.on('message', (msg, rinfo) => {
 
 
     if ( json && json.port && json.address ) {
+
+
       client.close()
       // peer = true
       // client.connect(json.port,json.address)
@@ -88,22 +90,23 @@ function setupPeer(port, address) {
 
     console.log(msg)
 
-
   });
 
   peer.on('connect', () => {
 
-  	console.log("connected as peer.")
-    // console.log(peer)
-    // var message = Buffer.from('secret:abcedf:secret');
-    setInterval(function() {
-          var message = Buffer.from('Some bytes');
-          // console.log(message)
-          peer.send(message, port, address)
-          peer.send(message, remote_port, remote_addr)
-
-        }, 20)
-    // peer.send(message)
+  	// console.log("connected as peer.")
+    // // console.log(peer)
+    // setInterval(function() {
+    //
+    //
+    //       peer.connect(port, address)
+    //       console.log(message)
+    //
+    //       // peer.connect(remote_port,remote_addr)
+    //       // peer.send(message, remote_port, remote_addr)
+    //       // peer.close()
+    //     }, 20)
+    // // peer.send(message)
 
   })
 
@@ -113,9 +116,18 @@ function setupPeer(port, address) {
 
   });
 
+  peer.on('close', () => {
+    console.log(peer)
+    console.log('peer closed.')
+
+  });
+
 
 
   peer.bind(bind_port)
   peer.connect(port, address)
+  var message = Buffer.from('peer message.');
+  peer.send(message, remote_port, remote_addr)
+
 
 }
