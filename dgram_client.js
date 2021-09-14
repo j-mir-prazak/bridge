@@ -14,17 +14,17 @@ client.on('error', (err) => {
 
 });
 
-// client.on('message', (msg, rinfo) => {
-//
-//   console.log(`client got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-// 	client.send("got u!", rinfo.port, rinfo.address)
-//
-// });
+client.on('message', (msg, rinfo) => {
+
+  console.log(`client got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	client.send("got u!", rinfo.port, rinfo.address)
+
+});
 
 client.on('connect', () => {
 
 	console.log("something is connecting.")
-  
+
   const message = Buffer.from('Some bytes');
 
   client.send(message)
@@ -40,7 +40,7 @@ client.on('listening', () => {
 });
 
 
-client.bind(bind_port);
+client.bind(bind_port)
 client.connect(remote_port, remote_addr)
 
 // Prints: client listening 0.0.0.0:41234

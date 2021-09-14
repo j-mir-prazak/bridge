@@ -2,6 +2,9 @@ var dgram = require('dgram');
 
 var server = dgram.createSocket('udp4');
 
+var register = {}
+
+
 server.on('error', (err) => {
   console.log(`server error:\n${err.stack}`);
   server.close();
@@ -9,8 +12,54 @@ server.on('error', (err) => {
 
 server.on('message', (msg, rinfo) => {
 
-  console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-	server.send("got u!", rinfo.port, rinfo.address)
+	if ( mesg.match(/secret\:.*\:secret/) ) {
+
+		var secret_string = data.replace(/secret\:(.*)\:secret/,"$1")
+
+		if ( register[secret_string] ) {
+
+
+			console.log("got match.")
+
+			server.send( JSON.stringify({
+
+				command: "connect",
+				address: rinfo.remoteAddress,
+				port: rinfo.remotePort
+
+			}), register[secret_string].port, register[secret_string].address )
+
+			server.send( JSON.stringify({
+
+				command: "connect",
+				address: register[secret_string].address,
+				port: register[secret_string].port
+
+			}), rinfo.port, rinfo.address )
+
+			// register[secret_string].socket.end()
+
+
+		}
+
+		else {
+
+			console.log("registration.")
+
+			register[secret_string] = {
+
+				port: rinfo.port,
+				address: rinfo.address,
+				secret: secret_string
+
+				}
+
+			}
+
+
+
+
+	}
 
 });
 
