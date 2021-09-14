@@ -94,8 +94,10 @@ function setupPeer(port, address) {
 
   peer.on('connect', () => {
 
-    var message = Buffer.from('peer message.');
+    var message = Buffer.from('peer message.')
+
     peer.send(message)
+
   	// console.log("connected as peer.")
     // // console.log(peer)
     // setInterval(function() {
@@ -127,8 +129,8 @@ function setupPeer(port, address) {
 
 
   peer.bind(bind_port)
-  // peer.connect(port, address)
-  peer.connect(remote_port, remote_addr)
+  peer.connect(port, address)
+  // peer.connect(remote_port, remote_addr)
 
 
 }
