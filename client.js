@@ -124,7 +124,7 @@ client.on('close', (c) => {
 
 		console.log('closed.')
 
-		server = setupServer(local_port)
+		// server = setupServer(local_port)
 
 
 })
@@ -134,7 +134,7 @@ client.on('ready', (c) => {
 
 	console.log('ready.')
 
-	client.destroy()
+	// client.destroy()
 
 })
 
