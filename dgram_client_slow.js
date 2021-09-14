@@ -37,11 +37,13 @@ client.on('message', (msg, rinfo) => {
       // }.bind(null,json),20)
       var date = Date.now()
       if ( json.order == "a" ) {
-        peer = setupPeer(json.port, json.address, json.date - date)
+        console.log("on NAT")
+        peer = setupPeer(json.port, json.address, json.date - date, local)
 
       }
       else if ( json.order == "b" ) {
 
+        console.log("free of NAT")
         peer = setupPeer(json.port, json.address, json.date - date)
 
 
@@ -91,9 +93,10 @@ client.bind(bind_port)
 client.connect(remote_port, remote_addr)
 
 // Prints: client listening 0.0.0.0:41234
-function setupPeer(port, address, timeout) {
+function setupPeer(port, address, timeout, local) {
 
   var peer = dgram.createSocket({type:'udp4',reuseAddr:true});
+  var local = local || false
 
   peer.on('message', (msg, rinfo) => {
 
@@ -149,50 +152,107 @@ function setupPeer(port, address, timeout) {
 
   peer.bind(bind_port, '0.0.0.0')
 
-  setTimeout(function() {
 
-    console.log("timeout.")
+  if ( local ) {
 
-    setInterval(function() {
+    setTimeout(function() {
 
-      if ( ! connect ) {
+      console.log("timeout.")
 
-        connect = true
-        // console.log(peer)
-        peer = dgram.createSocket({type:'udp4',reuseAddr:true});
-        peer.bind(bind_port, '0.0.0.0')
-
-        peer.connect(port, address)
-
-        peer.on('connect', () => {
+        if ( ! connect ) {
 
           connect = true
-
-          var message = Buffer.from('peer message.')
-          peer.send(message)
-
-
-        })
-        peer.on('message', (msg, rinfo) => {
-
-          console.log(msg)
-
-        });
+          // console.log(peer)
+          peer = dgram.createSocket({type:'udp4',reuseAddr:true});
+          peer.bind(bind_port, '0.0.0.0')
+          peer.connect(port, address)
 
 
-        setTimeout(function(){
+          peer.on('connect', () => {
 
-          peer.close(function() {
-            // console.log("callback")
-            connect = false
+            connect = true
+            console.log("connected.")
+            setTimeout(function(){
+
+              peer.disconnect()
+
+            }, 50)
+
 
           })
 
-        }, 500)
-      }
-    }.bind(null,port,address),2)
+          peer.on('message', (msg, rinfo) => {
 
-  }.bind(null, port, address), timeout)
+            console.log(msg)
+
+          })
+
+          peer.on('close', () => {
+            console.log("closed.")
+          })
+
+
+
+        }
+
+    }.bind(null, port, address), timeout)
+
+
+
+
+  }
+
+  else {
+
+    setTimeout(function() {
+
+      console.log("timeout.")
+
+      setInterval(function() {
+
+        if ( ! connect ) {
+
+          connect = true
+          // console.log(peer)
+          peer = dgram.createSocket({type:'udp4',reuseAddr:true});
+          peer.bind(bind_port, '0.0.0.0')
+          peer.connect(port, address)
+
+
+          peer.on('connect', () => {
+
+            connect = true
+
+            var message = Buffer.from('peer message.')
+            peer.send(message)
+
+
+          })
+          peer.on('message', (msg, rinfo) => {
+
+            console.log(msg)
+
+          });
+
+
+          setTimeout(function(){
+
+            peer.close(function() {
+              // console.log("callback")
+              connect = false
+
+            })
+
+          }, 500)
+        }
+      }.bind(null,port,address),20)
+
+    }.bind(null, port, address), timeout)
+
+
+
+  }
+
 
 
 

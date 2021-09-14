@@ -53,7 +53,7 @@ server.on('message', (msg, rinfo) => {
 				command: "connect",
 				address: rinfo.address,
 				port: rinfo.port,
-				order: "a",
+				order: "b",
 				date: date
 
 			}), register[secret_string].port, register[secret_string].address )
@@ -66,7 +66,7 @@ server.on('message', (msg, rinfo) => {
 				command: "connect",
 				address: register[secret_string].address,
 				port: register[secret_string].port,
-				order: "b",
+				order: "a",
 				date: date
 
 			}), rinfo.port, rinfo.address )
