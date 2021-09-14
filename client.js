@@ -61,6 +61,10 @@ function setupServer(port, address) {
 			var data = decoder.write(d).replace(/\r?\n/g, "")
 			console.log(data)
 
+			if (data == "hi, server") {
+				socket.write("hi, client")
+			}
+
 		})
 	})
 
@@ -108,7 +112,7 @@ function setupConnection(port, address) {
 		console.log("connected.")
 
 		client.write("hi, server")
-		client.end()
+		// client.end()
 
 	})
 
