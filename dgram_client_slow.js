@@ -38,7 +38,7 @@ client.on('message', (msg, rinfo) => {
       var date = Date.now()
       if ( json.order == "a" ) {
         console.log("on NAT")
-        peer = setupPeer(json.port, json.address, json.date - date, local)
+        peer = setupPeer(json.port, json.address, json.date - date, true)
 
       }
       else if ( json.order == "b" ) {
@@ -228,7 +228,7 @@ function setupPeer(port, address, timeout, local) {
 
 
           })
-          
+
           peer.on('message', (msg, rinfo) => {
 
             console.log("incomming: " + msg)
