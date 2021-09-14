@@ -24,6 +24,10 @@ client.on('error', (err) => {
 client.on('connect', () => {
 
 	console.log("something is connecting.")
+  
+  const message = Buffer.from('Some bytes');
+
+  client.send(message)
 
 })
 
@@ -37,6 +41,6 @@ client.on('listening', () => {
 
 
 client.bind(bind_port);
-client.connnect(remote_port, remote_addr)
+client.connect(remote_port, remote_addr)
 
 // Prints: client listening 0.0.0.0:41234

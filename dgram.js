@@ -7,12 +7,12 @@ server.on('error', (err) => {
   server.close();
 });
 
-// server.on('message', (msg, rinfo) => {
-//
-//   console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-// 	server.send("got u!", rinfo.port, rinfo.address)
-//
-// });
+server.on('message', (msg, rinfo) => {
+
+  console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	server.send("got u!", rinfo.port, rinfo.address)
+
+});
 
 server.on('connect', () => {
 
