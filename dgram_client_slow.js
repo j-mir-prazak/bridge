@@ -38,7 +38,7 @@ client.on('message', (msg, rinfo) => {
       var date = Date.now()
       if ( json.order == "a" ) {
         console.log("on NAT")
-        peer = setupPeer(json.port, json.address, json.date - date, true)
+        peer = setupPeer(json.port, json.address, json.date - date)
 
       }
       else if ( json.order == "b" ) {
@@ -165,7 +165,7 @@ function setupPeer(port, address, timeout, local) {
           // console.log(peer)
           peer = dgram.createSocket({type:'udp4',reuseAddr:true});
           peer.bind(bind_port, '0.0.0.0')
-          // peer.connect(port, address)
+          peer.connect(port, address)
 
 
           peer.on('connect', () => {
@@ -179,6 +179,10 @@ function setupPeer(port, address, timeout, local) {
             }, 50)
 
 
+          })
+          
+          peer.on('error', () => {
+            console.log("fail.")
           })
 
           peer.on('message', (msg, rinfo) => {
@@ -234,6 +238,10 @@ function setupPeer(port, address, timeout, local) {
             console.log("incomming: " + msg)
 
           });
+
+          peer.on('error', () => {
+            console.log("fail.")
+          })
 
 
           setTimeout(function(){
